@@ -1,40 +1,49 @@
 #include <stdio.h>
 
-void helloCPU()
-{
-  printf("Hello from the CPU.\n");
-}
-
 /*
- * Refactor the `helloGPU` definition to be a kernel
- * that can be launched on the GPU. Update its message
- * to read "Hello from the GPU!"
- * <<Done>>
+ * Refactor firstParallel so that it can run on the GPU.
+ * << added __global__ in front of the function >>
  */
 
-__global__ void helloGPU()
+__global__ void firstParallel()
 {
-  printf("Hello from the GPU. Checking that this code is executed...\n");
+  printf("This should be running in parallel.\n");
 }
 
 int main()
 {
-
-  helloCPU();
-
   /*
-   * Refactor this call to `helloGPU` so that it launches
-   * as a kernel on the GPU.
-   * <<Done>>
+   * Refactor this call to firstParallel to execute in parallel once
+   * on the GPU.
    */
 
-  helloGPU<<<1,1>>>();
-
+  firstParallel<<<1,1>>>();
+  cudaDeviceSynchronize();  // is needed or all the white space finishes first
+  
+  printf("\n"); // add a blank space
+  
   /*
-   * Add code below to synchronize on the completion of the
-   * `helloGPU` kernel completion before continuing the CPU
-   * thread.
+   * Refactor this call to firstParallel to execute in parallel in 5 threads
+   * on the GPU.
+   */
+   
+  firstParallel<<<1,5>>>();
+  cudaDeviceSynchronize();  // is needed or all the white space finishes first
+
+  printf("\n"); // add a blank space
+  
+  /*
+   * Refactor this call to firstParallel to execute in parallel in 5 blocks
+   * of 5 threads on the GPU.
+   */
+  
+  firstParallel<<<5,5>>>();
+  
+  /*
+   * Some code is needed below so that the CPU will wait
+   * for the GPU kernels to complete before proceeding.
    */
    
    cudaDeviceSynchronize();
+
 }
