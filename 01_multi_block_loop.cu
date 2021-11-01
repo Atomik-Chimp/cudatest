@@ -5,12 +5,10 @@
  * only do the work of 1 iteration of the original loop.
  */
 
-void loop(int N)
+__global__ void loop()
 {
-  for (int i = 0; i < N; ++i)
-  {
-    printf("This is iteration number %d\n", i);
-  }
+    printf("This is iteration number %d\n", blockIdx.x*blockDim.x + threadIdx.x);
+
 }
 
 int main()
@@ -22,8 +20,15 @@ int main()
    *
    * For this exercise, be sure to use more than 1 block in
    * the execution configuration.
+   *
+   * Note, sometimes block two finishes first so the sequence is not in order!  
+   * Will have to read farther to figure out how to fix these types of problems.
+   *
    */
 
   int N = 10;
-  loop(N);
+  int blocks = 2;
+  loop<<<blocks, N/blocks>>>();
+  cudaDeviceSynchronize();
+
 }
