@@ -54,7 +54,8 @@ int main()
    * `a` that can be used on both the host and the device.
    */
 
-  a = (int *)malloc(size);
+  // a = (int *)malloc(size);  // Old Code
+  cudaMallocManaged(&a, size);  // GPU managed memory
 
   init(a, N);
 
@@ -77,5 +78,6 @@ int main()
    * accessed by both the host and the device.
    */
 
-  free(a);
+  // free(a);  // Old Code
+  cudaFree(a);  // Free GPU memory
 }
