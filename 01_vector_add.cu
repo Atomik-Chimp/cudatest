@@ -8,7 +8,12 @@ void initWith(float num, float *a, int N)
   }
 }
 
-void addVectorsInto(float *result, float *a, float *b, int N)
+/*
+ * here is our kernel function, make it __global__
+ *
+ */
+
+__global__ void addVectorsInto(float *result, float *a, float *b, int N)
 {
   for(int i = 0; i < N; ++i)
   {
