@@ -42,17 +42,42 @@ int main()
 
   int N = 10000;
   int *a;
+  cudaError_t err;
 
   size_t size = N * sizeof(int);
-  cudaMallocManaged(&a, size);
-
+  err = cudaMallocManaged(&a, size);
+  
+  if(err != cudaSuccess){
+    printf("Error: %s\n", cudaGetErrorString(err));
+  }
+  
   init(a, N);
 
-  size_t threads_per_block = 2048;
+  /*
+   * Error checking reveals that the thread size was out of range
+   * threads are limited to 1024 or less
+   *
+   */
+  
+  /* size_t threads_per_block = 2048; */
+  size_t threads_per_block = 1024;
   size_t number_of_blocks = 32;
+  
+  /* 
+   * The example code used two error variables, one before sync and one after.
+   * There were no sync errors though, just the one above
+   */
 
   doubleElements<<<number_of_blocks, threads_per_block>>>(a, N);
-  cudaDeviceSynchronize();
+  err = cudaGetLastError();
+  if(err != cudaSuccess){
+    printf("Error: %s\n", cudaGetErrorString(err));
+  }
+  
+  err = cudaDeviceSynchronize();
+  if(err != cudaSuccess){
+    printf("Error: %s\n", cudaGetErrorString(err));
+  }
 
   bool areDoubled = checkElementsAreDoubled(a, N);
   printf("All elements were doubled? %s\n", areDoubled ? "TRUE" : "FALSE");
