@@ -36,8 +36,11 @@ int main()
 {
 
 /*
+
  * The macro can be wrapped around any function returning
+ 
  * a value of type `cudaError_t`.
+ 
  */
 
   checkCuda( cudaDeviceSynchronize() )
