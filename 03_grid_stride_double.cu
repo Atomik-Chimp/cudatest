@@ -15,14 +15,19 @@ void init(int *a, int N)
  * each parallel thread work on more than one element of the array.
  */
 
-__global__
-void doubleElements(int *a, int N)
+__global__ void doubleElements(int *a, int N)
 {
-  int i;
-  i = blockIdx.x * blockDim.x + threadIdx.x;
-  if (i < N)
-  {
-    a[i] *= 2;
+  int indexWithinTheGrid = blockIdx.x * blockDim.x + threadIdx.x;
+  int gridStride = gridDim.x * blockDim.x;
+  
+  // this moves to the next grid
+  for(int i = indexWithinTheGrid ; i < N ; i += gridStride){
+
+    // this handles the work inside the grid
+    if (i < N)  // doesn't try to do work outside the scope of the array
+    {
+      a[i] *= 2;
+    }
   }
 }
 
