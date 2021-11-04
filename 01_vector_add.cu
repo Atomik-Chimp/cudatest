@@ -42,10 +42,21 @@ int main()
   float *a;
   float *b;
   float *c;
-
+  
+  /*
+   * changed the memory allocation to the GPU
+   *
+   */
+  
+  /*
   a = (float *)malloc(size);
   b = (float *)malloc(size);
   c = (float *)malloc(size);
+  */
+   
+  cudaMallocManaged(&a, size);
+  cudaMallocManaged(&b, size);
+  cudaMallocManaged(&c, size);
 
   initWith(3, a, N);
   initWith(4, b, N);
@@ -54,8 +65,15 @@ int main()
   addVectorsInto(c, a, b, N);
 
   checkElementsAre(7, c, N);
-
+  
+  /*
   free(a);
   free(b);
   free(c);
+  */
+
+  cudaFree(a);
+  cudaFree(b);
+  cudaFree(c);
+
 }
