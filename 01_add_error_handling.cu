@@ -9,8 +9,7 @@ void init(int *a, int N)
   }
 }
 
-__global__
-void doubleElements(int *a, int N)
+__global__ void doubleElements(int *a, int N)
 {
 
   int idx = blockIdx.x * blockDim.x + threadIdx.x;
