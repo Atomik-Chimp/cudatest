@@ -16,10 +16,11 @@ Compile 01_first_parallel.cu with:
 
 
 
-CUDA Error Handling Function
+# CUDA Error Handling Function
 
 It can be helpful to create a macro that wraps CUDA function calls for checking errors. Here is an example, feel free to use it in the remaining exercises:
 
+...
 #include <stdio.h>
 #include <assert.h>
 
@@ -45,3 +46,4 @@ int main()
 
   checkCuda( cudaDeviceSynchronize() )
 }
+...
