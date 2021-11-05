@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 
 void initWith(float num, float *a, int N)
 {
