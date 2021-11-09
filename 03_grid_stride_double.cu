@@ -22,12 +22,8 @@ __global__ void doubleElements(int *a, int N)
   
   // this moves to the next grid
   for(int i = indexWithinTheGrid ; i < N ; i += gridStride){
-
-    // this handles the work inside the grid
-    if (i < N)  // doesn't try to do work outside the scope of the array
-    {
-      a[i] *= 2;
-    }
+    //no need for an if here the for protects from working on elements outside of N
+    a[i] *= 2;
   }
 }
 
