@@ -102,15 +102,27 @@ int main()
   c = (float *)malloc(size);
   */
    
-  cudaMallocManaged(&a, size);
-  cudaMallocManaged(&b, size);
-  cudaMallocManaged(&c, size);
+  checkCuda( cudaMallocManaged(&a, size));
+  checkCuda( cudaMallocManaged(&b, size));
+  checkCuda( cudaMallocManaged(&c, size));
 
   initWith(3, a, N);
   initWith(4, b, N);
   initWith(0, c, N);
-
-  addVectorsInto<<<2,2>>>(c, a, b, N);
+  
+  /*
+   * set up the size of our grid
+   */
+  size_t = threadsPerBlock;
+  size_t = numberOfBlocks;
+  
+  threadsPerBlock = 256;
+  numberOfBlocks = (N+threadsPerBlock -1)/threadsPerBlock;
+  
+  addVectorsInto<<<numberOfBlocks,threadsPerBlock>>>(c, a, b, N);
+  
+  checkCuda( cudaGetLastError());
+  checkCuda( cudaDeviceSynchronize());
 
   checkElementsAre(7, c, N);
   
@@ -120,8 +132,8 @@ int main()
   free(c);
   */
 
-  cudaFree(a);
-  cudaFree(b);
-  cudaFree(c);
+  checkCuda(cudaFree(a));
+  checkCuda(cudaFree(b));
+  checkCuda(cudaFree(c));
 
 }
