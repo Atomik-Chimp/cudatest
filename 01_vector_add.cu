@@ -38,7 +38,7 @@
 
 inline cudaError_t checkCuda(cudaError_t result)
 {
-  if result != cudaSuccess){
+  if(result != cudaSuccess){
     fprintf(stderr, "CudaRuntime Error: %s\n", cudaGetErrorString(result));
     assert(result == cudaSuccess);
     }
@@ -64,7 +64,7 @@ __global__ void addVectorsInto(float *result, float *a, float *b, int N)
   int indexWithinTheGrid = threadIdx.x +blockIdx.x * blockDim.x;
   int gridStride = gridDim.x * blockDim.x;
      
-  for(int i = indexWithinTheGrid; i < N; i+gridStride){
+  for(int i = indexWithinTheGrid; i < N; i+=gridStride){
     result[i] = a[i] + b[i];
   }
 }
@@ -113,8 +113,8 @@ int main()
   /*
    * set up the size of our grid
    */
-  size_t = threadsPerBlock;
-  size_t = numberOfBlocks;
+  size_t threadsPerBlock;
+  size_t numberOfBlocks;
   
   threadsPerBlock = 256;
   numberOfBlocks = (N+threadsPerBlock -1)/threadsPerBlock;
