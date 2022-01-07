@@ -84,7 +84,7 @@ void checkElementsAre(float target, float *array, int N)
 
 int main()
 {
-  const int N = 2<<20;
+  const int N = 2<<20; // bit-shifts a binary two, adds 20 zeros to it, so these are big vectors.
   size_t size = N * sizeof(float);
 
   float *a;
