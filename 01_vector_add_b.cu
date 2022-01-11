@@ -61,6 +61,7 @@ int main()
   size_t numberOfBlocks = (N + (threadsPerBlock - 1))/ threadsPerBlock;
 
   addVectorsInto<<<numberOfBlocks, threadsPerBlock>>>(c, a, b, N);
+  cudaDeviceSynchronize();
 
   checkElementsAre(7, c, N);
 
